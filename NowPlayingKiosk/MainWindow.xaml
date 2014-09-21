@@ -1,0 +1,6 @@
+﻿<Window x:Class="NowPlayingKiosk.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Now Playing Kiosk" Height="768" Width="1024" KeyDown="Window_KeyDown">
+
+</Window>
