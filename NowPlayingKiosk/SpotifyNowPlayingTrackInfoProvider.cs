@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NowPlayingKiosk
 {
@@ -28,11 +24,11 @@ namespace NowPlayingKiosk
             if (windowTitle != null)
             {
                 // For example "Foo Fighters – Monkey Wrench"
-                int Idx = windowTitle.IndexOf('–');
-                if (Idx != -1)
+                int idx = windowTitle.IndexOf('–');
+                if (idx != -1)
                 {
-                    string artist = windowTitle.Substring(0, Idx).Trim();
-                    string title = windowTitle.Substring(Idx + 1).Trim();
+                    string artist = windowTitle.Substring(0, idx).Trim();
+                    string title = windowTitle.Substring(idx + 1).Trim();
                     nowPlaying = new TrackInfo(artist, title);
                 }
             }

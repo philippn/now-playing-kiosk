@@ -1,13 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.Serialization;
-using System.Runtime.Serialization.Json;
-using System.Security.Cryptography;
-using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -162,9 +155,9 @@ namespace NowPlayingKiosk
         private void LoadSkin()
         {
             string SkinPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Skin", "skin.xaml");
-            FileStream Fs = new FileStream(@SkinPath, FileMode.Open);
-            Grid Grid = System.Windows.Markup.XamlReader.Load(Fs) as Grid;
-            this.Content = Grid;
+            FileStream fs = new FileStream(@SkinPath, FileMode.Open);
+            Grid grid = System.Windows.Markup.XamlReader.Load(fs) as Grid;
+            Content = grid;
         }
 
         private void StartPoller()
