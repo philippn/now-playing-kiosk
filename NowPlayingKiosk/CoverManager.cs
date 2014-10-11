@@ -163,8 +163,18 @@ namespace NowPlayingKiosk
                 }
             }
 
+            foreach (Item item in response.Tracks.Items)
+            {
+                // Fallback to singles
+                if (IsOfType(item, "single"))
+                {
+                    return item;
+                }
+            }
+
             if (response.Tracks.Items.Length > 0)
             {
+                // Probably a compilation or something... still better than nothing
                 return response.Tracks.Items[0];
             }
 
