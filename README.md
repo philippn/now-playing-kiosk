@@ -11,6 +11,8 @@ Features
 - Cover images are automically downloaded using the Spotify Web API
 - Supported media players: Spotify
 
+![Alt Screenshot](screenshot.png)
+
 Requirements
 ------------
 - Microsoft .NET Framework 4.0+
