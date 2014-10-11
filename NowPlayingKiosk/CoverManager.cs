@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -127,7 +128,8 @@ namespace NowPlayingKiosk
             try
             {
                 string query = "q=artist:" + WebUtility.UrlEncode(info.Artist) + "+track:" + WebUtility.UrlEncode(info.Title);
-                string url = "https://api.spotify.com/v1/search?" + query + "&type=track";
+                string market = CultureInfo.InstalledUICulture.TwoLetterISOLanguageName;
+                string url = "https://api.spotify.com/v1/search?" + query + "&type=track&market=" + market;
                 HttpWebRequest request = WebRequest.Create(url) as HttpWebRequest;
                 using (HttpWebResponse response = request.GetResponse() as HttpWebResponse)
                 {
@@ -154,26 +156,19 @@ namespace NowPlayingKiosk
         {
             foreach (Item item in response.Tracks.Items)
             {
-                if (IsAvailableIn(item, "DE") && IsOfType(item, "album"))
+                // Prefer albums
+                if (IsOfType(item, "album"))
                 {
                     return item;
                 }
             }
 
-            foreach (Item item in response.Tracks.Items)
+            if (response.Tracks.Items.Length > 0)
             {
-                if (IsAvailableIn(item, "DE"))
-                {
-                    return item;
-                }
+                return response.Tracks.Items[0];
             }
 
             return null;
-        }
-
-        private bool IsAvailableIn(Item item, string market)
-        {
-            return item.Album.AvailableMarkets.Contains(market);
         }
 
         private bool IsOfType(Item item, string albumType)
