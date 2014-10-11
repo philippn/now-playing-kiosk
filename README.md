@@ -21,5 +21,5 @@ Simply execute `NowPlayingKiosk.exe`. When a supported media player
 is playing back something, it will be detected automatically at runtime.
 
 To customize the layout to your liking, simply modify the skin.xaml located 
-in the Skin folder. For more details on XAML, please see refer to: 
+in the Skin folder. For more details on XAML, please refer to: 
 http://msdn.microsoft.com/en-us/library/ms747122(v=vs.110).aspx
