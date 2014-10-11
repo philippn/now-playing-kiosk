@@ -8,7 +8,7 @@ in a supported media player.
 Features
 --------
 - Completely skinnable interface using XAML
-- Cover images are automically downladed using Spotify Web API
+- Cover images are automically downloaded using the Spotify Web API
 - Supported media players: Spotify
 
 Requirements
