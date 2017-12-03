@@ -6,11 +6,13 @@ namespace NowPlayingKiosk
     {
         public string Artist { get; set; }
         public string Title { get; set; }
+        public string AlbumArtUrl { get; set; }
 
-        public TrackInfo(string artist, string title)
+        public TrackInfo(string artist, string title, string albumArtUrl)
         {
             this.Artist = artist;
             this.Title = title;
+            this.AlbumArtUrl = albumArtUrl;
         }
 
         public override bool Equals(Object obj)
