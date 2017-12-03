@@ -8,7 +8,7 @@ in a supported media player.
 Features
 --------
 - Completely skinnable interface using XAML
-- Cover images are automically downloaded and cached locally
+- Cover images are automatically downloaded and cached locally
 - Supported media players: Spotify
 
 ![Alt Screenshot](screenshot.png)
