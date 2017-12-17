@@ -39,7 +39,7 @@ namespace NowPlayingKiosk
                 TrackInfo nowPlaying = nowPlayingProvider.WhatIsNowPlaying();
                 if (nowPlaying != null)
                 {
-                    if (!nowPlaying.Equals(lastPlayed))
+                    if (!nowPlaying.Equals(lastPlayed) || (lastPlayed.AlbumArtUrl == null))
                     {
                         ViewModel model = new ViewModel();
 
