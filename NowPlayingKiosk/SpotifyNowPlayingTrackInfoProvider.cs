@@ -1,60 +1,27 @@
-﻿using SpotifyAPI.Local;
-using SpotifyAPI.Local.Enums;
-using SpotifyAPI.Local.Models;
+﻿using SpotifyAPI.Web;
+using SpotifyAPI.Web.Enums;
+using SpotifyAPI.Web.Models;
 using System;
-using System.Net;
 
 namespace NowPlayingKiosk
 {
     public class SpotifyNowPlayingTrackInfoProvider : NowPlayingTrackInfoProvider
     {
-        private readonly SpotifyLocalAPI clientApi;
-        private Boolean connected;
+        private readonly SpotifyWebAPI clientApi;
 
-        public SpotifyNowPlayingTrackInfoProvider()
+        public SpotifyNowPlayingTrackInfoProvider(SpotifyWebAPI api)
         {
-            clientApi = new SpotifyLocalAPI();
+            clientApi = api;
         }
 
         public TrackInfo WhatIsNowPlaying()
         {
-            if (!SpotifyLocalAPI.IsSpotifyRunning() || 
-                !SpotifyLocalAPI.IsSpotifyWebHelperRunning())
-            {
-                // Either the spotify client or WebHelper is not running. Ouch.
-                connected = false;
-                return null;
-            }
+            PlaybackContext context = clientApi.GetPlayingTrack();
 
-            if (!connected && clientApi.Connect())
+            if (context.IsPlaying && !TrackType.Ad.Equals(context.CurrentlyPlayingType))
             {
-                connected = true;
-            }
-            else if (!connected)
-            {
-                return null;
-            }
-
-            StatusResponse status = clientApi.GetStatus(); // GetStatus() is safe to use
-            if (status == null)
-            {
-                connected = false;
-                return null;
-            }
-
-            if (status.Playing && !status.Track.IsAd())
-            {
-                Track track = status.Track;
-                string albumArtUrl = null;
-                try
-                {
-                    albumArtUrl = track.GetAlbumArtUrl(AlbumArtSize.Size640);
-                }
-                catch (WebException)
-                {
-                    // Do nothing
-                }
-                return new TrackInfo(track.ArtistResource.Name, track.TrackResource.Name, albumArtUrl);
+                FullTrack track = context.Item;
+                return new TrackInfo(track.Artists[0].Name, track.Name, track.Album.Images[0].Url);
             }
             return null;
         }

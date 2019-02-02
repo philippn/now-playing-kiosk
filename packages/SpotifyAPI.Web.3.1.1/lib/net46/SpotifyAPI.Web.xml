@@ -179,6 +179,11 @@
                 Maximum number of tries for one failed request.
             </summary>
         </member>
+        <member name="P:SpotifyAPI.Web.SpotifyWebAPI.TooManyRequestsConsumesARetry">
+            <summary>
+                Whether a failure of type "Too Many Requests" should use up one of the allocated retry attempts.
+            </summary>
+        </member>
         <member name="P:SpotifyAPI.Web.SpotifyWebAPI.RetryErrorCodes">
             <summary>
                 Error codes that will trigger auto-retry if <see cref="P:SpotifyAPI.Web.SpotifyWebAPI.UseAutoRetry"/> is enabled.
@@ -1203,7 +1208,7 @@
         </member>
         <member name="M:SpotifyAPI.Web.SpotifyWebAPI.RemovePlaylistTrack(System.String,System.String,SpotifyAPI.Web.Models.DeleteTrackUri)">
             <summary>
-                Remove one or more tracks from a user’s playlist.
+                Remove a track from a user’s playlist.
             </summary>
             <param name="userId">The user's Spotify user ID.</param>
             <param name="playlistId">The Spotify ID for the playlist.</param>
@@ -1213,7 +1218,7 @@
         </member>
         <member name="M:SpotifyAPI.Web.SpotifyWebAPI.RemovePlaylistTrackAsync(System.String,System.String,SpotifyAPI.Web.Models.DeleteTrackUri)">
             <summary>
-                Remove one or more tracks from a user’s playlist asynchronously.
+                Remove a track from a user’s playlist asynchronously.
             </summary>
             <param name="userId">The user's Spotify user ID.</param>
             <param name="playlistId">The Spotify ID for the playlist.</param>
@@ -1245,7 +1250,7 @@
         </member>
         <member name="M:SpotifyAPI.Web.SpotifyWebAPI.AddPlaylistTrack(System.String,System.String,System.String,System.Nullable{System.Int32})">
             <summary>
-                Add one or more tracks to a user’s playlist.
+                Add a track to a user’s playlist.
             </summary>
             <param name="userId">The user's Spotify user ID.</param>
             <param name="playlistId">The Spotify ID for the playlist.</param>
@@ -1256,7 +1261,7 @@
         </member>
         <member name="M:SpotifyAPI.Web.SpotifyWebAPI.AddPlaylistTrackAsync(System.String,System.String,System.String,System.Nullable{System.Int32})">
             <summary>
-                Add one or more tracks to a user’s playlist asynchronously.
+                Add a track to a user’s playlist asynchronously.
             </summary>
             <param name="userId">The user's Spotify user ID.</param>
             <param name="playlistId">The Spotify ID for the playlist.</param>
@@ -1485,47 +1490,51 @@
             </param>
             <returns></returns>
         </member>
-        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.ResumePlayback(System.String,System.String,System.Collections.Generic.List{System.String},System.Nullable{System.Int32})">
+        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.ResumePlayback(System.String,System.String,System.Collections.Generic.List{System.String},System.Nullable{System.Int32},System.Int32)">
             <summary>
                 Start a new context or resume current playback on the user’s active device.
             </summary>
             <param name="deviceId">The id of the device this command is targeting. If not supplied, the user's currently active device is the target.</param>
             <param name="contextUri">Spotify URI of the context to play.</param>
             <param name="uris">A JSON array of the Spotify track URIs to play.</param>
-            <param name="offset">Indicates from where in the context playback should start. 
+            <param name="offset">Indicates from where in the context playback should start.
+            <param name="positionMs">The starting time to seek the track to</param>
             Only available when context_uri corresponds to an album or playlist object, or when the uris parameter is used.</param>
             <returns></returns>
         </member>
-        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.ResumePlaybackAsync(System.String,System.String,System.Collections.Generic.List{System.String},System.Nullable{System.Int32})">
+        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.ResumePlaybackAsync(System.String,System.String,System.Collections.Generic.List{System.String},System.Nullable{System.Int32},System.Int32)">
             <summary>
                 Start a new context or resume current playback on the user’s active device.
             </summary>
             <param name="deviceId">The id of the device this command is targeting. If not supplied, the user's currently active device is the target.</param>
             <param name="contextUri">Spotify URI of the context to play.</param>
             <param name="uris">A JSON array of the Spotify track URIs to play.</param>
-            <param name="offset">Indicates from where in the context playback should start. 
+            <param name="offset">Indicates from where in the context playback should start.
+            <param name="positionMs">The starting time to seek the track to</param>
             Only available when context_uri corresponds to an album or playlist object, or when the uris parameter is used.</param>
             <returns></returns>
         </member>
-        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.ResumePlayback(System.String,System.String,System.Collections.Generic.List{System.String},System.String)">
+        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.ResumePlayback(System.String,System.String,System.Collections.Generic.List{System.String},System.String,System.Int32)">
             <summary>
                 Start a new context or resume current playback on the user’s active device.
             </summary>
             <param name="deviceId">The id of the device this command is targeting. If not supplied, the user's currently active device is the target.</param>
             <param name="contextUri">Spotify URI of the context to play.</param>
             <param name="uris">A JSON array of the Spotify track URIs to play.</param>
-            <param name="offset">Indicates from where in the context playback should start. 
+            <param name="offset">Indicates from where in the context playback should start.
+            <param name="positionMs">The starting time to seek the track to</param>
             Only available when context_uri corresponds to an album or playlist object, or when the uris parameter is used.</param>
             <returns></returns>
         </member>
-        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.ResumePlaybackAsync(System.String,System.String,System.Collections.Generic.List{System.String},System.String)">
+        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.ResumePlaybackAsync(System.String,System.String,System.Collections.Generic.List{System.String},System.String,System.Int32)">
             <summary>
                 Start a new context or resume current playback on the user’s active device.
             </summary>
             <param name="deviceId">The id of the device this command is targeting. If not supplied, the user's currently active device is the target.</param>
             <param name="contextUri">Spotify URI of the context to play.</param>
             <param name="uris">A JSON array of the Spotify track URIs to play.</param>
-            <param name="offset">Indicates from where in the context playback should start. 
+            <param name="offset">Indicates from where in the context playback should start.
+            <param name="positionMs">The starting time to seek the track to</param>
             Only available when context_uri corresponds to an album or playlist object, or when the uris parameter is used.</param>
             <returns></returns>
         </member>
@@ -1640,6 +1649,14 @@
             <param name="shuffle">True or False</param>
             <param name="deviceId">The id of the device this command is targeting. If not supplied, the user's currently active device is the target.</param>
             <returns></returns>
+        </member>
+        <member name="M:SpotifyAPI.Web.SpotifyWebAPI.GetTooManyRequests(SpotifyAPI.Web.Models.ResponseInfo)">
+            <summary>
+                Retrieves whether request had a "TooManyRequests" error, and get the amount Spotify recommends waiting before another request.
+            </summary>
+            <param name="info">Info object to analyze.</param>
+            <returns>Seconds to wait before making another request.  -1 if no error.</returns>
+            <remarks>AUTH NEEDED</remarks>
         </member>
         <member name="T:SpotifyAPI.Web.SpotifyWebBuilder">
             <summary>

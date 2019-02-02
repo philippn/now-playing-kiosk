@@ -1,4 +1,8 @@
-﻿using System;
+﻿using SpotifyAPI.Web;
+using SpotifyAPI.Web.Auth;
+using SpotifyAPI.Web.Enums;
+using SpotifyAPI.Web.Models;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Threading;
@@ -89,6 +93,27 @@ namespace NowPlayingKiosk
         }
     }
 
+    public class RelayCommand : ICommand
+    {
+        public event EventHandler CanExecuteChanged;
+        private readonly Action Action;
+
+        public RelayCommand(Action action)
+        {
+            Action = action;
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public void Execute(object parameter)
+        {
+            Action();
+        }
+    }
+
     public class ViewModel : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
@@ -97,6 +122,7 @@ namespace NowPlayingKiosk
         public string Title { get; set; }
         public string CoverImage { get; set; }
         public string BackgroundImage { get; set; }
+        public ICommand LoginCommand { get; set; }
 
         protected void RaisePropertyChangedEvent(string propertyName)
         {
@@ -118,8 +144,22 @@ namespace NowPlayingKiosk
         {
             InitializeComponent();
 
-            LoadSkin();
-            StartPoller();
+            string _clientId = "xxx";
+            string _clientSecret = "yyy";
+            
+            AuthorizationCodeAuth auth =
+                new AuthorizationCodeAuth(_clientId, _clientSecret, "http://localhost:4002", "http://localhost:4002",
+                    Scope.UserReadCurrentlyPlaying);
+            auth.AuthReceived += LoggedInSuccessfully;
+            auth.Start();
+
+            ViewModel viewModel = new ViewModel
+            {
+                LoginCommand = new RelayCommand(auth.OpenBrowser)
+            };
+
+            DataContext = viewModel;
+            Content = LoadSkin("LoginPage.xaml");
         }
 
         protected override void OnStateChanged(EventArgs e)
@@ -138,7 +178,10 @@ namespace NowPlayingKiosk
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            poller.StopAlready = true;
+            if (poller != null)
+            {
+                poller.StopAlready = true;
+            }
             base.OnClosing(e);
         }
 
@@ -152,18 +195,40 @@ namespace NowPlayingKiosk
             }
         }
 
-        private void LoadSkin()
+        private Page LoadSkin(string template)
         {
-            string SkinPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Skin", "skin.xaml");
-            FileStream fs = new FileStream(@SkinPath, FileMode.Open);
-            Grid grid = System.Windows.Markup.XamlReader.Load(fs) as Grid;
-            Content = grid;
+            string skinPath = System.IO.Path.Combine(Directory.GetCurrentDirectory(), "Skin", template);
+            FileStream fs = new FileStream(@skinPath, FileMode.Open);
+            return System.Windows.Markup.XamlReader.Load(fs) as Page;
         }
 
-        private void StartPoller()
+        private void GoToMainPage()
+        {
+            Page mainPage = LoadSkin("MainPage.xaml");
+            Content = mainPage;
+        }
+
+        private async void LoggedInSuccessfully(object sender, AuthorizationCode payload)
+        {
+            AuthorizationCodeAuth auth = (AuthorizationCodeAuth)sender;
+            auth.Stop();
+
+            Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => GoToMainPage()));
+
+            Token token = await auth.ExchangeCode(payload.Code);
+            SpotifyWebAPI api = new SpotifyWebAPI
+            {
+                AccessToken = token.AccessToken,
+                TokenType = token.TokenType
+            };
+
+            StartPoller(api);
+        }
+
+        private void StartPoller(SpotifyWebAPI api)
         {
             CoverManager coverManager = new CoverManager();
-            NowPlayingTrackInfoProvider trackInfoProvider = new SpotifyNowPlayingTrackInfoProvider();
+            NowPlayingTrackInfoProvider trackInfoProvider = new SpotifyNowPlayingTrackInfoProvider(api);
             poller = new TrackInfoPoller(trackInfoProvider, coverManager, this);
             Thread pollerThread = new Thread(new ThreadStart(poller.PollAndUpdate));
             pollerThread.Start();

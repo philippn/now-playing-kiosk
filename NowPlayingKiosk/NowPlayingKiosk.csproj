@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NowPlayingKiosk</RootNamespace>
     <AssemblyName>NowPlayingKiosk</AssemblyName>
-    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -54,8 +54,11 @@
     </StartupObject>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.11.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="SpotifyAPI.Web, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\SpotifyAPI.Web.3.0.0\lib\SpotifyAPI.Web.dll</HintPath>
+      <HintPath>..\packages\SpotifyAPI.Web.3.1.1\lib\net46\SpotifyAPI.Web.dll</HintPath>
     </Reference>
     <Reference Include="SpotifyAPI.Web.Auth, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\SpotifyAPI.Web.Auth.3.1.1\lib\net46\SpotifyAPI.Web.Auth.dll</HintPath>
@@ -72,7 +75,7 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="Unosquare.Labs.EmbedIO, Version=1.15.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EmbedIO.1.15.0\lib\net47\Unosquare.Labs.EmbedIO.dll</HintPath>
+      <HintPath>..\packages\EmbedIO.1.15.0\lib\net46\Unosquare.Labs.EmbedIO.dll</HintPath>
     </Reference>
     <Reference Include="Unosquare.Swan.Lite, Version=0.34.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Unosquare.Swan.Lite.0.33.3\lib\net452\Unosquare.Swan.Lite.dll</HintPath>
@@ -100,9 +103,13 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Skin\skin.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Skin\LoginPage.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Skin\MainPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
@@ -132,7 +139,9 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Skin\background.png" />
