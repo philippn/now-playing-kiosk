@@ -4,6 +4,7 @@ using SpotifyAPI.Web.Enums;
 using SpotifyAPI.Web.Models;
 using System;
 using System.ComponentModel;
+using System.Configuration;
 using System.IO;
 using System.Threading;
 using System.Windows;
@@ -144,9 +145,10 @@ namespace NowPlayingKiosk
         {
             InitializeComponent();
 
-            string _clientId = "xxx";
-            string _clientSecret = "yyy";
-            
+            // These settings are located in App.config file
+            string _clientId = ConfigurationManager.AppSettings["ClientId"].ToString();
+            string _clientSecret = ConfigurationManager.AppSettings["ClientSecret"].ToString();
+
             AuthorizationCodeAuth auth =
                 new AuthorizationCodeAuth(_clientId, _clientSecret, "http://localhost:4002", "http://localhost:4002",
                     Scope.UserReadCurrentlyPlaying);
