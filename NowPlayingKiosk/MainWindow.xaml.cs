@@ -140,6 +140,7 @@ namespace NowPlayingKiosk
     {
         private bool _inStateChange;
         private TrackInfoPoller poller;
+        private SpotifyWebAPI webApi;
 
         public MainWindow()
         {
@@ -218,19 +219,19 @@ namespace NowPlayingKiosk
             Dispatcher.Invoke(DispatcherPriority.Render, new Action(() => GoToMainPage()));
 
             Token token = await auth.ExchangeCode(payload.Code);
-            SpotifyWebAPI api = new SpotifyWebAPI
+            webApi = new SpotifyWebAPI
             {
                 AccessToken = token.AccessToken,
                 TokenType = token.TokenType
             };
 
-            StartPoller(api);
+            StartPoller(auth, token);
         }
 
-        private void StartPoller(SpotifyWebAPI api)
+        private void StartPoller(AuthorizationCodeAuth auth, Token token)
         {
             CoverManager coverManager = new CoverManager();
-            NowPlayingTrackInfoProvider trackInfoProvider = new SpotifyNowPlayingTrackInfoProvider(api);
+            NowPlayingTrackInfoProvider trackInfoProvider = new SpotifyNowPlayingTrackInfoProvider(webApi, auth, token);
             poller = new TrackInfoPoller(trackInfoProvider, coverManager, this);
             Thread pollerThread = new Thread(new ThreadStart(poller.PollAndUpdate));
             pollerThread.Start();
