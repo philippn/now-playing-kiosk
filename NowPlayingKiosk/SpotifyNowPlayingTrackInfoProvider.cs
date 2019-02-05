@@ -28,6 +28,10 @@ namespace NowPlayingKiosk
             {
                 accessToken = authorization.RefreshToken(refreshToken.RefreshToken).Result;
                 webApi.AccessToken = accessToken.AccessToken;
+                if (accessToken.RefreshToken != null)
+                {
+                    refreshToken = accessToken;
+                }
             }
 
             PlaybackContext context = webApi.GetPlayingTrack();
