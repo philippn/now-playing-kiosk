@@ -15,13 +15,13 @@ Features
 
 Requirements
 ------------
-- Microsoft .NET Framework 4.0+
+- Microsoft .NET Framework 4.6.1
 
 Usage Notes
 -----------
 Simply execute `NowPlayingKiosk.exe`. When a supported media player 
 is playing back something, it will be detected automatically at runtime.
 
-To customize the layout to your liking, simply modify the `skin.xaml` located 
+To customize the layout to your liking, simply modify the `MainPage.xaml` located 
 in the skin folder. For more details on XAML, please refer to: 
 http://msdn.microsoft.com/en-us/library/ms747122(v=vs.110).aspx
