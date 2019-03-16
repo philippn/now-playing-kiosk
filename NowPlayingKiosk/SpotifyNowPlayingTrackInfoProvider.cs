@@ -34,13 +34,17 @@ namespace NowPlayingKiosk
                 }
             }
 
-            PlaybackContext context = webApi.GetPlayingTrack();
-
-            if (context.IsPlaying && !TrackType.Ad.Equals(context.CurrentlyPlayingType))
+            try
             {
-                FullTrack track = context.Item;
-                return new TrackInfo(track.Artists[0].Name, track.Name, track.Album.Images[0].Url);
+                PlaybackContext context = webApi.GetPlayingTrack();
+                if (context.IsPlaying && !TrackType.Ad.Equals(context.CurrentlyPlayingType))
+                {
+                    FullTrack track = context.Item;
+                    return new TrackInfo(track.Artists[0].Name, track.Name, track.Album.Images[0].Url);
+                }
             }
+            catch (AggregateException)
+            { }
             return null;
         }
     }
