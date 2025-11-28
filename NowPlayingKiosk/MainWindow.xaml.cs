@@ -151,7 +151,7 @@ namespace NowPlayingKiosk
             string _clientSecret = ConfigurationManager.AppSettings["ClientSecret"].ToString();
 
             AuthorizationCodeAuth auth =
-                new AuthorizationCodeAuth(_clientId, _clientSecret, "http://localhost:4002", "http://localhost:4002",
+                new AuthorizationCodeAuth(_clientId, _clientSecret, "http://127.0.0.1:4002", "http://127.0.0.1:4002",
                     Scope.UserReadCurrentlyPlaying);
             auth.AuthReceived += LoggedInSuccessfully;
             auth.Start();
